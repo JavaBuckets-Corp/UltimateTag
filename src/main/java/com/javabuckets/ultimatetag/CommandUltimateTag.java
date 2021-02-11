@@ -7,6 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.*;
+
 public class CommandUltimateTag implements CommandExecutor {
     JavaPlugin plugin;
 
@@ -28,7 +30,7 @@ public class CommandUltimateTag implements CommandExecutor {
                 playerSender.sendMessage("All players will be assigned as contestants");
 
                 UltimateTag.contestants.addAll(playerSender.getWorld().getPlayers());
-
+                UltimateTag.randomPosition = true;
                 UltimateTag.initialize(plugin);
 
                 return true;
@@ -39,9 +41,48 @@ public class CommandUltimateTag implements CommandExecutor {
                     Bukkit.broadcastMessage("UltimateTag has stopped");
                     return true;
                 }
+                if (args[0].equals("timer")) {
+                    if (args.length > 1) {
+                        UltimateTag.defaultTimer = Integer.parseInt(args[1]);
+                    }
+                    return true;
+                }
+                if (args[0].equals("border")) {
+                    if (args.length > 1) {
+                        UltimateTag.borderSize = Integer.parseInt(args[1]);
+                    }
+                    return true;
+                }
+                if (args[0].equals("addtaggeritem")) {
+                    UltimateTag.taggerItems.add(playerSender.getInventory().getItemInMainHand());
+                    return true;
+                }
+                if (args[0].equals("additem")) {
+                    UltimateTag.playerItems.add(playerSender.getInventory().getItemInMainHand());
+                    return true;
+                }
+                if (args[0].equals("resetitems")) {
+                    UltimateTag.playerItems = (ArrayList) UltimateTag.playerItemsDefault.clone();
+                    UltimateTag.taggerItems = (ArrayList) UltimateTag.taggerItemsDefault.clone();
+                    return true;
+                }
 
                 if (UltimateTag.isRunning) {
                     playerSender.sendMessage("A game is already in progress");
+                    return true;
+                }
+                if (args[0].equals("here")) {
+                    if (UltimateTag.isRunning) {
+                        playerSender.sendMessage("A game is already in progress");
+                        return true;
+                    }
+
+                    playerSender.sendMessage("All players will be assigned as contestants");
+
+                    UltimateTag.contestants.addAll(playerSender.getWorld().getPlayers());
+                    UltimateTag.randomPosition = false;
+                    UltimateTag.initialize(plugin);
+
                     return true;
                 }
 

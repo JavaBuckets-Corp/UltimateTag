@@ -1,5 +1,5 @@
 name: UltimateTag
-version: 0.0.2
+version: 0.0.3
 main: com.javabuckets.ultimatetag.UltimateTag
 authors: [JavaBuckets]
 description: You have two minutes to avoid being tagged by the others.
